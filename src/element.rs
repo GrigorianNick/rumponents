@@ -16,13 +16,13 @@ impl Element {
 pub fn div(children: Vec<Element>) -> Element {
     Element {
         elm_tag: String::from("div"),
-        children: vec![]
+        children: children
     }
 }
 
 pub fn p(children: Vec<Element>) -> Element {
     Element {
         elm_tag: String::from("p"),
-        children: vec![]
+        children: children
     }
 }
