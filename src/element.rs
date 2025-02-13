@@ -12,17 +12,78 @@ impl Element {
         }
     }
 }
-
-pub fn div(children: Vec<Element>) -> Element {
-    Element {
-        elm_tag: String::from("div"),
-        children: children
-    }
+macro_rules! elem  {
+    ($($n:ident),*) => {
+        $(
+        pub fn $n(children: Vec<Element>) -> Element {
+            Element {
+                elm_tag: String::from("$n"),
+                children: children
+            }
+        }
+        )*
+    };
 }
 
-pub fn p(children: Vec<Element>) -> Element {
-    Element {
-        elm_tag: String::from("p"),
-        children: children
-    }
-}
+// a's
+elem!(a, abbr, address, area, article, aside, audio);
+
+// b's
+elem!(b, base, bdi, bdo, blockquote, body, br, button);
+
+// c's
+elem!(canvas, caption, cite, code, col, colgroup);
+
+// d's
+elem!(data, datalist, dd, del, details, dfn, dialog, div, dl, dt);
+
+// e's
+elem!(em, embed);
+
+// f's
+elem!(fieldset, figcaption, figure, footer, form);
+
+// h's
+elem!(h1, h2, h3, h4, h5, h6, head, header, hgroup, hr, html);
+
+// i's
+elem!(i, iframe, img, input, ins);
+
+// k's
+elem!(kbd);
+
+// l's
+elem!(label, legend, li, link);
+
+// m's
+elem!(main, map, mark, menu, meta, meter);
+
+// n's
+elem!(nav, noscript);
+
+// o's
+elem!(object, ol, optgroup, option, output);
+
+// p's
+elem!(p, param, picture, pre, progress);
+
+// q's
+elem!(q);
+
+// r's
+elem!(rp, rt, ruby);
+
+// s's
+elem!(s, samp, script, search, section, select, small, source, span, strong, style, sub, summary, sup, svg);
+
+// t's
+elem!(table, tbody, td, template, textarea, tfoot, th, thread, time, title, tr, track);
+
+// u's
+elem!(u, ul);
+
+// v's
+elem!(var, video);
+
+// w's
+elem!(wbr);
