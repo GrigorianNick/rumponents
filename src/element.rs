@@ -15,7 +15,7 @@ impl Element {
         if self.children.len() > 0 {
             format!("{}{}</{}>", open_tag, self.children[0].to_string(), self.elm_tag)
         } else {
-            format!("<{}>{}</{}>", open_tag, "No children!", self.elm_tag)
+            format!("{}{}</{}>", open_tag, "No children!", self.elm_tag)
         }
     }
 
