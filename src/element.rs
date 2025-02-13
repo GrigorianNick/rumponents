@@ -14,7 +14,7 @@ impl Element {
             format!("<{}>", self.elm_tag)
         };
         match &self.inner {
-            Some(s) => format!("{}{}</{}>", open_tag, "No children!", self.elm_tag),
+            Some(s) => format!("{}{}</{}>", open_tag, s, self.elm_tag),
             None => {
                 let c: Vec<String> = self.children.iter().map(|c| c.to_string()).collect();
                 format!("{}{}</{}>", open_tag, c.join(""), self.elm_tag)
