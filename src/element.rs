@@ -1,7 +1,8 @@
 pub struct Element {
     elm_tag: String,
     children: Vec<Element>,
-    attrs: Vec<(String, String)>
+    attrs: Vec<(String, String)>,
+    inner: Option<String>
 }
 
 impl Element {
@@ -12,15 +13,22 @@ impl Element {
         } else {
             format!("<{}>", self.elm_tag)
         };
-        if self.children.len() > 0 {
-            format!("{}{}</{}>", open_tag, self.children[0].to_string(), self.elm_tag)
-        } else {
-            format!("{}{}</{}>", open_tag, "No children!", self.elm_tag)
+        match &self.inner {
+            Some(s) => format!("{}{}</{}>", open_tag, "No children!", self.elm_tag),
+            None => {
+                let c: Vec<String> = self.children.iter().map(|c| c.to_string()).collect();
+                format!("{}{}</{}>", open_tag, c.join(""), self.elm_tag)
+            }
         }
     }
 
     pub fn attr(mut self, attr: String, value: String) -> Element {
         self.attrs.push((attr, value));
+        self
+    }
+
+    pub fn inner(mut self, inner: String) -> Element {
+        self.inner = Some(inner);
         self
     }
 }
@@ -33,6 +41,7 @@ macro_rules! elem  {
                 elm_tag: String::from(stringify!($n)),
                 children: children,
                 attrs: vec![],
+                inner: None
             }
         }
         )*
