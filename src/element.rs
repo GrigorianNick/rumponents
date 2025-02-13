@@ -17,7 +17,7 @@ macro_rules! elem  {
         $(
         pub fn $n(children: Vec<Element>) -> Element {
             Element {
-                elm_tag: String::from("$n"),
+                elm_tag: String::from(stringify!($n)),
                 children: children
             }
         }
