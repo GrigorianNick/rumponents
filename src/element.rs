@@ -1,15 +1,27 @@
 pub struct Element {
     elm_tag: String,
     children: Vec<Element>,
+    attrs: Vec<(String, String)>
 }
 
 impl Element {
     pub fn to_string(&self) -> String {
+        let open_tag = if self.attrs.len() > 0 {
+            let x = self.attrs.iter().map(|(a, v)| format!("{}=\"{}\"", a, v)).fold(String::from(""), |acc, val| format!("{} {}", acc, val));
+            format!("<{} {}>", self.elm_tag, x)
+        } else {
+            format!("<{}>", self.elm_tag)
+        };
         if self.children.len() > 0 {
-            format!("<{}>{}</{}>", self.elm_tag, self.children[0].to_string(), self.elm_tag)
+            format!("{}{}</{}>", open_tag, self.children[0].to_string(), self.elm_tag)
         } else {
             format!("<{}>{}</{}>", self.elm_tag, "No children!", self.elm_tag)
         }
+    }
+
+    pub fn attr(mut self, attr: String, value: String) -> Element {
+        self.attrs.push((attr, value));
+        self
     }
 }
 macro_rules! elem  {
@@ -18,7 +30,8 @@ macro_rules! elem  {
         pub fn $n(children: Vec<Element>) -> Element {
             Element {
                 elm_tag: String::from(stringify!($n)),
-                children: children
+                children: children,
+                attrs: vec![],
             }
         }
         )*
