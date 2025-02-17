@@ -36,18 +36,17 @@ impl Element {
 macro_rules! elem  {
     ($($n:ident),*) => {
         $(
-        pub fn $n(children: Vec<Option<Element>>) -> Option<Element> {
-            Some(Element {
+        pub fn $n(children: Vec<Element>) -> Element {
+            Element {
                 elm_tag: String::from(stringify!($n)),
-                children: children.into_iter().flatten().collect(),
+                children: children,
                 attrs: vec![],
                 inner: None
-            })
+            }
         }
         )*
     };
 }
-
 
 // a's
 elem!(a, abbr, address, area, article, aside, audio);
@@ -113,11 +112,21 @@ elem!(var, video);
 elem!(wbr);
 
 // Special cases
-pub fn img(src: String) -> Option<Element> {
-    Some(Element {
+pub fn img(src: String) -> Element {
+    Element {
         elm_tag: String::from("img"),
         children: vec![],
         attrs: vec![(String::from("src"), src)],
         inner: None,
-    })
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn t() {
+        let d = div(vec![img("test".into())].iter().filter(predicate)).attr("class".into(), "test_class".into());
+    }
 }
