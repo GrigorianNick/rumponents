@@ -36,17 +36,18 @@ impl Element {
 macro_rules! elem  {
     ($($n:ident),*) => {
         $(
-        pub fn $n(children: Vec<Element>) -> Element {
-            Element {
+        pub fn $n(children: Vec<Option<Element>>) -> Option<Element> {
+            Some(Element {
                 elm_tag: String::from(stringify!($n)),
-                children: children,
+                children: children.into_iter().flatten().collect(),
                 attrs: vec![],
                 inner: None
-            }
+            })
         }
         )*
     };
 }
+
 
 // a's
 elem!(a, abbr, address, area, article, aside, audio);
@@ -70,7 +71,7 @@ elem!(fieldset, figcaption, figure, footer, form);
 elem!(h1, h2, h3, h4, h5, h6, head, header, hgroup, hr, html);
 
 // i's
-elem!(i, iframe, img, input, ins);
+elem!(i, iframe, input, ins);
 
 // k's
 elem!(kbd);
@@ -110,3 +111,13 @@ elem!(var, video);
 
 // w's
 elem!(wbr);
+
+// Special cases
+pub fn img(src: String) -> Option<Element> {
+    Some(Element {
+        elm_tag: String::from("img"),
+        children: vec![],
+        attrs: vec![(String::from("src"), src)],
+        inner: None,
+    })
+}
