@@ -31,6 +31,15 @@ impl Element {
         self.inner = Some(inner);
         self
     }
+
+    // Useful attrs
+    pub fn class(mut self, class: String) -> Element {
+        self.attr("class".into(), class)
+    }
+
+    pub fn id(mut self, id: String) -> Element {
+        self.attr("id".into(), id)
+    }
 }
 
 macro_rules! elem  {
