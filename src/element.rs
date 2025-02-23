@@ -22,6 +22,24 @@ impl Element {
         }
     }
 
+    fn tag(tag: String) -> Element {
+        Element {
+            elm_tag: tag,
+            children: vec![],
+            attrs: vec![],
+            inner: None
+        }
+    }
+
+    fn text(tag: String, text: String) -> Element {
+        Element {
+            elm_tag: tag,
+            children: vec![],
+            attrs: vec![],
+            inner: Some(text),
+        }
+    }
+
     pub fn attr(mut self, attr: String, value: String) -> Element {
         self.attrs.push((attr, value));
         self
@@ -58,13 +76,13 @@ macro_rules! elem  {
 }
 
 // a's
-elem!(a, abbr, address, area, article, aside, audio);
+elem!(abbr, address, article, aside, audio);
 
 // b's
-elem!(b, base, bdi, bdo, blockquote, body, br, button);
+elem!(b, base, bdi, blockquote, body, button);
 
 // c's
-elem!(canvas, caption, cite, code, col, colgroup);
+elem!(canvas, caption, cite, code, colgroup);
 
 // d's
 elem!(data, datalist, dd, del, details, dfn, dialog, div, dl, dt);
@@ -76,10 +94,10 @@ elem!(em, embed);
 elem!(fieldset, figcaption, figure, footer, form);
 
 // h's
-elem!(h1, h2, h3, h4, h5, h6, head, header, hgroup, hr, html);
+elem!(h1, h2, h3, h4, h5, h6, head, header, hgroup, html);
 
 // i's
-elem!(i, iframe, input, ins);
+elem!(i, ins);
 
 // k's
 elem!(kbd);
@@ -88,7 +106,7 @@ elem!(kbd);
 elem!(label, legend, li, link);
 
 // m's
-elem!(main, map, mark, menu, meta, meter);
+elem!(main, mark, menu, meter);
 
 // n's
 elem!(nav, noscript);
@@ -109,7 +127,7 @@ elem!(rp, rt, ruby);
 elem!(s, samp, script, search, section, select, small, source, span, strong, style, sub, summary, sup, svg);
 
 // t's
-elem!(table, tbody, td, template, textarea, tfoot, th, thread, time, title, tr, track);
+elem!(table, tbody, td, template, tfoot, th, thread, time, tr, track);
 
 // u's
 elem!(u, ul);
@@ -117,8 +135,97 @@ elem!(u, ul);
 // v's
 elem!(var, video);
 
-// w's
-elem!(wbr);
+pub fn a(url: String, children: Vec<Element>) -> Element {
+    Element {
+        elm_tag: String::from("a"),
+        children: children,
+        attrs: vec![(String::from("href"), url)],
+        inner: None
+    }
+}
+
+pub fn area(shape: String, coords: String) -> Element {
+    Element {
+        elm_tag: String::from("area"),
+        children: vec![],
+        attrs: vec![(String::from("shape"), shape), (String::from("coords"), coords)],
+        inner: None
+    }
+}
+
+pub fn bdo(dir: String, children: Vec<Element>) -> Element {
+    Element {
+        elm_tag: String::from("bdo"),
+        children: children,
+        attrs: vec![(String::from("dir"), dir)],
+        inner: None
+    }
+}
+
+pub fn br() -> Element {
+    Element::tag(String::from("br"))
+}
+
+pub fn col() -> Element {
+    Element::tag(String::from("col"))
+}
+
+pub fn hr() -> Element {
+    Element::tag(String::from("hr"))
+}
+
+pub fn iframe(src: String) -> Element {
+    Element {
+        elm_tag: String::from("iframe"),
+        children: vec![],
+        attrs: vec![(String::from("src"), src)],
+        inner: None
+    }
+}
+
+pub fn input(input_type: String) -> Element {
+    Element {
+        elm_tag: String::from("input"),
+        children: vec![],
+        attrs: vec![(String::from("type"), input_type)],
+        inner: None
+    }
+}
+
+pub fn map(name: String, children: Vec<Element>) -> Element {
+    Element {
+        elm_tag: String::from("map"),
+        children: children,
+        attrs: vec![(String::from("name"), name)],
+        inner: None
+    }
+}
+
+pub fn meta(name: String, content: String) -> Element {
+    Element {
+        elm_tag: String::from("meta"),
+        children: vec![],
+        attrs: vec![(name, content)],
+        inner: None
+    }
+}
+
+pub fn textarea(text: String) -> Element {
+    Element {
+        elm_tag: String::from("textarea"),
+        children: vec![],
+        attrs: vec![],
+        inner: Some(text)
+    }
+}
+
+pub fn title(title: String) -> Element {
+    Element::text(String::from("title"), title)
+}
+
+pub fn wbr() -> Element {
+    Element::tag(String::from("wbr"))
+}
 
 // Special cases
 pub fn img(src: String) -> Element {
@@ -127,15 +234,5 @@ pub fn img(src: String) -> Element {
         children: vec![],
         attrs: vec![(String::from("src"), src)],
         inner: None,
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn t() {
-        let d = div(vec![img("test".into())].iter().filter(predicate)).attr("class".into(), "test_class".into());
     }
 }
