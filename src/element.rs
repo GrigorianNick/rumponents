@@ -8,7 +8,7 @@ pub struct Element {
 impl Element {
     pub fn to_string(&self) -> String {
         let open_tag = if self.attrs.len() > 0 {
-            let x = self.attrs.iter().map(|(a, v)| format!("{}=\"{}\"", a, v)).fold(String::from(""), |acc, val| format!("{} {}", acc, val));
+            let x = self.attrs.iter().map(|(a, v)| format!("{}={}", a, v)).fold(String::from(""), |acc, val| format!("{} {}", acc, val));
             format!("<{} {}>", self.elm_tag, x)
         } else {
             format!("<{}>", self.elm_tag)
@@ -41,7 +41,11 @@ impl Element {
     }
 
     pub fn attr(mut self, attr: String, value: String) -> Element {
-        self.attrs.push((attr, value));
+        if value.ends_with('\'') && value.starts_with('\'') {
+            self.attrs.push((attr, value));
+        } else {
+            self.attrs.push((attr, ["\"".into(), value, "\"".into()].join("")));
+        }
         self
     }
 
